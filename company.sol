@@ -1,15 +1,15 @@
-pragma solidity ^0.4.21;
+pragma solidity ^0.4.22;
 
 contract company {
     struct certificate { 
-        bytes picture;
+        string picture;
         mapping (address => bool) isValid;
     }
+                
+    address Company = 0xE0f5206BBD039e7b0592d8918820024e2a7437b9;
+    certificate[] public Certificates; 
     
-    address Company = 0xffffffffff;
-    certificate[] Certificates; 
-    
-    function addCertificate(bytes pic)  {
+    function addCertificate(string pic) public  {
         if (msg.sender != Company) {
             return;
         }
@@ -18,7 +18,7 @@ contract company {
         Certificates.push(tmp);
     }
     
-    function giveCertificate(uint certificateID, address receiver)  {
+    function giveCertificate(uint certificateID, address receiver) public  {
         if (msg.sender != Company) {
             return;
         }
