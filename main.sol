@@ -13,16 +13,20 @@ contract Main{
         owner = msg.sender;
     }
     
-    function addStudent(string studentInfo) public {
-        //check money
+    
+    
+    function addStudent(string studentInfo) public payable {
+        //equals 1 ether
+        if(msg.value != 100500 wei)revert();
+        owner.transfer(100500 wei);
         //place event for creating new instance
-        //transfer money
     }
     
-    function addCompany(string companyInfo) public {
-        //check money
+    function addCompany(string companyInfo) public payable {
+        //equals 1 ether
+        if(msg.value != 100500 wei)revert();
+        owner.transfer(100500 wei);
         //place event for creating new instance
-        //transfer money
     }
     
     function createStudent(address student, address original) public {
