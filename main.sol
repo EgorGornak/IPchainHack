@@ -12,22 +12,24 @@ contract Main{
     }
 
     struct Client{
-        uint INN;
-        mapping (address => bool) allowance;
         pair[] arr;
+        mapping (address => bool) allowance;
+        uint INN;
     }
     
-    Client [] clients;
     Company [] companies;
     address owner;
-    
+    Client [] clients;
+        Client tmp2;
+        Company tmp1;
+   
     constructor() public{
-        Client tmp;
-        Company tmp2;
-        clients.push(tmp);
-        companies.push(tmp2);
         owner = msg.sender;
-        
+    }
+    
+    function FIRST() public{
+        clients.push(tmp2);
+        companies.push(tmp1);
     }
     
     mapping(address => uint) clientsInd;
@@ -49,21 +51,20 @@ contract Main{
         clients[clientInd].allowance[msg.sender] = false;
     }
     
-    function createCompany(uint INN) public payable{
-        if(msg.value != 1500000 wei)
-            revert();
+    function createCompany(uint INN) public{
         if(companiesInd[msg.sender] != 0)
             revert();
-        Company tmp;
-        tmp.INN = INN;
-        companiesInd[msg.sender] =companies.push(tmp); 
+        tmp1.INN = INN;
+        Company memory buffer = tmp1;
+        companiesInd[msg.sender] =companies.push(buffer) - 1; 
     }
     
-    function createClient(uint INN) public payable{
-        if(msg.value != 1500000 wei || clientsInd[msg.sender] != 0) revert();
-        Client tmp;
-        tmp.INN = INN;
-        clientsInd[msg.sender] = clients.push(tmp);
+    function createClient(uint INN) public{
+        if(clientsInd[msg.sender] != 0)
+            revert();
+        tmp2.INN = INN;
+        Client memory buffer = tmp2;
+        clientsInd[msg.sender] = clients.push(tmp2) -1 ;
     }
     
 
