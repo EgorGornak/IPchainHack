@@ -1,7 +1,92 @@
 pragma solidity ^0.4.22;
 
-import "./company.sol";
-import "./student.sol";
+contract Student{
+    
+    struct pair{
+        address companyAddress;
+        string cerificateName;
+    }
+    
+    struct vector{
+        uint size;
+        mapping (uint => pair) arr;
+    }
+    
+    vector certificates;
+    
+    address studentOwner;
+    string public studentInfo;
+    
+    constructor(string _info, address owner) public{
+        studentOwner = owner;
+        studentInfo = _info;
+    }
+    
+    mapping (address => bool) allowance;
+    
+    function allow(address company) public{
+        if(msg.sender != studentOwner)
+            return;
+        allowance[company] = true;
+    }
+
+    function prohibit(address company) public{
+        if(msg.sender != studentOwner)
+            return;
+        allowance[company] = false;
+    }
+    
+    
+    function recieveCertificate(string cerificateName) public{
+        if(allowance[msg.sender] == false)
+            return;
+        pair memory tmp;
+        tmp.companyAddress = msg.sender;
+        tmp.cerificateName = cerificateName;
+        certificates.arr[certificates.size] = tmp;
+        certificates.size += 1;
+        allowance[msg.sender] = false;
+    }
+    
+}
+
+contract Company {
+    struct certificate {
+        string name;
+        string picture;
+        mapping (address => bool) isValid;
+    }
+    
+    address companyOwner;
+    string public companyInfo;
+    
+     
+    constructor(string _info, address owner) public{
+        companyInfo = _info;
+        companyOwner = owner;
+    }
+                
+    mapping (string => certificate) certificates;
+    
+    function addCertificate(string name, string picture) public {
+        if (msg.sender != companyOwner) {
+            return;
+        }
+        certificate memory tmp;
+        tmp.name = name;
+        tmp.picture = picture;
+        certificates[name] = tmp;
+    }
+    
+    function giveCertificate(string name, address receiver) public  {
+        if (msg.sender != companyOwner) {
+            return;
+        }
+        Student dc = Student(receiver);
+        dc.recieveCertificate(name);
+        certificates[name].isValid[receiver] = true;
+    }
+}
 
 contract Main{
     
@@ -12,8 +97,6 @@ contract Main{
     constructor() public {
         owner = msg.sender;
     }
-    
-    
     
     function addStudent(string studentInfo) public payable {
         //equals 1 ether
