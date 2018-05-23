@@ -4,50 +4,78 @@ import "./company.sol";
 import "./student.sol";
 
 contract Main{
+    
     address owner;
-    mapping (address => address)ownership;
+    mapping (address => address) studentOwnership;
+    mapping (address => address) companyOwnership;
     
     constructor() public {
         owner = msg.sender;
     }
     
-    function addStudent() public {
-        
+    function addStudent(string studentInfo) public {
+        //check money
+        //place event for creating new instance
+        //transfer money
     }
     
-    function addCompany() public {
-        
+    function addCompany(string companyInfo) public {
+        //check money
+        //place event for creating new instance
+        //transfer money
     }
     
-    function createStudent(){
-        
+    function createStudent(address student, address original) public {
+        if(msg.sender != owner)
+            return;
+        studentOwnership[student] = original;
+        //place event that his instance ready
     }
     
-    function createCompany(){
-        
+    function createCompany(address company, address original) public {
+        if(msg.sender != owner)
+            return;
+        companyOwnership[company] = original;
+        //place event that his instance ready
     }
     
-    function allow(){
-        
+    function allow(address company) public {
+        if(studentOwnership[msg.sender] == 0)
+            return;
+        Student tmp = Student(studentOwnership[msg.sender]);
+        tmp.allow(company);
     }
     
-    function prohibit(){
-        
+    function prohibit(address company) public {
+        if(studentOwnership[msg.sender] == 0)
+            return;
+        Student tmp = Student(studentOwnership[msg.sender]);
+        tmp.prohibit(company);
     }
     
-    function addCertificate(){
-        
+    function addCertificate(string name, string picture) public {
+        if(companyOwnership[msg.sender] == 0)
+            return;
+        Company tmp = Company(companyOwnership[msg.sender]);
+        tmp.addCertificate(name, picture);
     }
     
-    function giveCertificate(){
-        
+    function giveCertificate(string name, address receiver) public{
+        if(companyOwnership[msg.sender] == 0)
+            return;
+        Company tmp = Company(companyOwnership[msg.sender]);
+        tmp.giveCertificate(name, receiver);
     }
     
-    function changeStudentOwnership(){
-        
+    function changeStudentOwnership(address newOwner) public{
+        if(studentOwnership[msg.sender] == 0)
+            return;
+        studentOwnership[msg.sender] = newOwner;
     }
     
-    function changeCompanyOwnership(){
-        
+    function changeCompanyOwnership(address newOwner) public{
+        if(companyOwnership[msg.sender] == 0)
+            return;
+        companyOwnership[msg.sender] = newOwner;
     }
 }
