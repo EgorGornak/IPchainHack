@@ -17,12 +17,14 @@ contract Student{
     vector certificates;
     
     address studentOwner;
+    string public studentInfo;
     
-    constructor() public{
-        studentOwner = msg.sender;
+    constructor(string _info, address owner) public{
+        studentOwner = owner;
+        studentInfo = _info;
     }
     
-    mapping (address => bool) allowance;//we need this to verify if the recieveCertificate caller can assign us a new certificate
+    mapping (address => bool) allowance;
     
     function allow(address company) public{
         if(msg.sender != studentOwner)

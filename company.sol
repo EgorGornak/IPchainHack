@@ -10,24 +10,18 @@ import "./student.sol";
 
 contract Company {
     struct certificate {
-        string name;//name of cert
-        string picture;//cert
-        mapping (address => bool) isValid;//do adress has this cert
+        string name;
+        string picture;
+        mapping (address => bool) isValid;
     }
     
-    address companyOwner;//address of company for this contract
-    string public info;//company info in any form : name, date of registration etc...
+    address companyOwner;
+    string public companyInfo;
     
      
-    constructor(string _info) public{// constructor
-        info = _info;
-        companyOwner = msg.sender;
-    }
-            
-            
-    function changeCompanyAdress(address newOwner) public{//if company changes thier adress 
-        if(msg.sender == companyOwner)
-            companyOwner = newOwner;
+    constructor(string _info, address owner) public{
+        companyInfo = _info;
+        companyOwner = owner;
     }
                 
     mapping (string => certificate) certificates;
